@@ -1,5 +1,28 @@
 {
-  "genereLe": "2026-09-19T16:30:14.161Z",
+  "genereLe": "2026-09-19T17:24:38.738Z",
   "seuilNouveauteJours": 7,
-  "matieres": []
+  "matieres": [
+    {
+      "id": "svt",
+      "label": "SVT",
+      "notions": [
+        {
+          "id": "division-cellulaire-mitose-meiose",
+          "titre": "Mitose et méiose",
+          "documents": [
+            {
+              "type": "page",
+              "label": "Fiche + bilan",
+              "path": "svt/division-cellulaire-mitose-meiose.html",
+              "format": "html",
+              "titre": "Mitose et méiose",
+              "derniereMaj": "2026-09-19T17:24:37Z"
+            }
+          ],
+          "derniereMaj": "2026-09-19T17:24:37Z"
+        }
+      ],
+      "derniereMaj": "2026-09-19T17:24:37Z"
+    }
+  ]
 }
