@@ -1,0 +1,558 @@
+<title>Mitose et méiose</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F1F4EF;
+    --surface:#FFFFFF;
+    --surface-2:#E8EEE6;
+    --ink:#1C2420;
+    --ink-soft:#4E5850;
+    --ink-faint:#83907F;
+    --line:#D9E1D6;
+    --accent:#7A2E63;        /* méiose — teinte de coloration cytologique */
+    --accent-soft:#F2E4EC;
+    --accent-2:#1F7A66;      /* mitose — vert croissance */
+    --accent-2-soft:#E0EFE8;
+    --warn:#93591C;
+    --warn-soft:#F5E9D6;
+    --focus:#2F6FED;
+    --shadow: 0 1px 2px rgba(28,36,32,0.06), 0 6px 20px rgba(28,36,32,0.07);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12160F;
+      --surface:#191F19;
+      --surface-2:#212A20;
+      --ink:#E9EDE4;
+      --ink-soft:#AEBAA9;
+      --ink-faint:#748073;
+      --line:#2B342A;
+      --accent:#E0A0C8;
+      --accent-soft:#332330;
+      --accent-2:#6BCBAE;
+      --accent-2-soft:#173028;
+      --warn:#E6B172;
+      --warn-soft:#3A2E17;
+      --focus:#7FA8FF;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12160F;
+    --surface:#191F19;
+    --surface-2:#212A20;
+    --ink:#E9EDE4;
+    --ink-soft:#AEBAA9;
+    --ink-faint:#748073;
+    --line:#2B342A;
+    --accent:#E0A0C8;
+    --accent-soft:#332330;
+    --accent-2:#6BCBAE;
+    --accent-2-soft:#173028;
+    --warn:#E6B172;
+    --warn-soft:#3A2E17;
+    --focus:#7FA8FF;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    line-height:1.5;
+    padding-inline:18px;
+    padding-block:22px 48px;
+    max-width:560px;
+    margin-inline:auto;
+  }
+  h1,h2,h3{
+    font-family:'Source Serif 4', Georgia, serif;
+    text-wrap:balance;
+    color:var(--ink);
+    margin:0;
+  }
+  p{margin:0;}
+  ::selection{background:var(--accent-soft); color:var(--ink);}
+  a{color:var(--accent);}
+  :focus-visible{outline:2px solid var(--focus); outline-offset:2px; border-radius:4px;}
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    letter-spacing:0.09em;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px; height:7px; border-radius:50%;
+    background:var(--accent);
+    flex:none;
+  }
+
+  header.page{
+    display:flex; flex-direction:column; gap:8px;
+    margin-bottom:28px;
+  }
+  h1{font-size:1.7rem; font-weight:700;}
+  .dek{
+    color:var(--ink-soft);
+    font-size:0.95rem;
+    max-width:60ch;
+  }
+
+  section{margin-block:30px;}
+  section > h2{
+    font-size:1.15rem;
+    font-weight:600;
+    margin-bottom:12px;
+  }
+  .section-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.68rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    display:block;
+    margin-bottom:4px;
+  }
+
+  /* ---- ploidy diagram ---- */
+  .diagram-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 14px 12px;
+    box-shadow:var(--shadow);
+  }
+  .diagram-row{
+    display:flex; align-items:center; gap:10px;
+    padding-block:10px;
+  }
+  .diagram-row + .diagram-row{border-top:1px solid var(--line);}
+  .diagram-row .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    font-weight:600;
+    letter-spacing:0.02em;
+    width:60px;
+    flex:none;
+  }
+  .diagram-row.mitose .tag{color:var(--accent-2);}
+  .diagram-row.meiose .tag{color:var(--accent);}
+  .diagram-row svg{width:100%; height:auto; flex:1; min-width:0;}
+  .diagram-caption{
+    font-size:0.78rem;
+    color:var(--ink-faint);
+    text-align:center;
+    padding-top:10px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+
+  /* ---- reading text ---- */
+  .lede{
+    font-family:'Source Serif 4', Georgia, serif;
+    font-size:1.05rem;
+    max-width:62ch;
+  }
+  .lede + .lede{margin-top:12px;}
+  .lede strong{color:var(--ink); font-weight:600;}
+
+  ul.notions{
+    list-style:none; margin:0; padding:0;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  ul.notions li{
+    display:flex; gap:10px; align-items:baseline;
+    font-size:0.95rem;
+  }
+  ul.notions li::before{
+    content:"—";
+    color:var(--ink-faint);
+    flex:none;
+  }
+  .chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.75rem;
+    font-weight:600;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:1px 6px;
+    white-space:nowrap;
+  }
+
+  .callout{
+    border-left:3px solid var(--accent-2);
+    background:var(--accent-2-soft);
+    border-radius:0 10px 10px 0;
+    padding:14px 16px;
+    font-family:'Source Serif 4', Georgia, serif;
+    font-size:0.98rem;
+  }
+  .callout.warn{
+    border-left-color:var(--warn);
+    background:var(--warn-soft);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.92rem;
+  }
+  .callout.warn ul{margin:0; padding-left:1.1em; display:flex; flex-direction:column; gap:6px;}
+
+  .divider{
+    display:flex; align-items:center; gap:12px;
+    margin-block:38px 22px;
+    color:var(--ink-faint);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+  }
+  .divider::before, .divider::after{content:""; height:1px; background:var(--line); flex:1;}
+
+  .bilan-intro{
+    font-size:0.88rem;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px dashed var(--line);
+    border-radius:10px;
+    padding:10px 12px;
+    margin-bottom:22px;
+  }
+
+  ol.questions{
+    list-style:none; margin:0; padding:0;
+    counter-reset:q;
+    display:flex; flex-direction:column; gap:18px;
+  }
+  ol.questions li{
+    counter-increment:q;
+    display:flex; gap:12px;
+  }
+  ol.questions li::before{
+    content:counter(q);
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    font-size:0.85rem;
+    color:var(--accent);
+    background:var(--accent-soft);
+    width:24px; height:24px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    flex:none;
+    margin-top:2px;
+  }
+  .q-body{display:flex; flex-direction:column; gap:6px; flex:1; min-width:0;}
+  .q-text{font-size:0.96rem;}
+  .q-note{
+    width:100%;
+    border:none;
+    border-bottom:1px dotted var(--ink-faint);
+    background:transparent;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.85rem;
+    color:var(--ink);
+    padding:4px 2px;
+  }
+  .q-note::placeholder{color:var(--ink-faint);}
+  .q-note:focus{border-bottom-style:solid; border-bottom-color:var(--accent);}
+
+  .checklist{
+    display:flex; flex-direction:column; gap:2px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  .checklist label{
+    display:flex; align-items:flex-start; gap:10px;
+    padding:12px 14px;
+    font-size:0.9rem;
+    cursor:pointer;
+  }
+  .checklist label + label{border-top:1px solid var(--line);}
+  .checklist input[type="checkbox"]{
+    appearance:none;
+    width:19px; height:19px; flex:none;
+    border:1.5px solid var(--ink-faint);
+    border-radius:5px;
+    margin-top:1px;
+    display:grid; place-content:center;
+    cursor:pointer;
+  }
+  .checklist input[type="checkbox"]::before{
+    content:"";
+    width:10px; height:10px;
+    clip-path:polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 45% 62%);
+    transform:scale(0);
+    background:var(--surface);
+  }
+  .checklist input[type="checkbox"]:checked{
+    background:var(--accent-2); border-color:var(--accent-2);
+  }
+  .checklist input[type="checkbox"]:checked::before{transform:scale(1);}
+  .checklist label:has(input:checked) .q-text-label{color:var(--ink-faint); text-decoration:line-through; text-decoration-color:var(--line);}
+
+  .progress-row{
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin-bottom:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.75rem;
+    color:var(--ink-faint);
+  }
+  .progress-row strong{color:var(--accent-2); font-size:0.85rem;}
+  .progress-track{
+    height:5px; border-radius:3px; background:var(--surface-2);
+    overflow:hidden; margin-bottom:14px;
+  }
+  .progress-fill{
+    height:100%; background:var(--accent-2); width:0%;
+    transition:width .3s ease;
+  }
+
+  textarea.freeblock{
+    width:100%;
+    min-height:84px;
+    resize:vertical;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.9rem;
+    color:var(--ink);
+    background:
+      repeating-linear-gradient(var(--surface), var(--surface) 27px, var(--line) 28px);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:8px 12px;
+    line-height:28px;
+  }
+  textarea.freeblock::placeholder{color:var(--ink-faint); line-height:1.4;}
+
+  details.corrige{
+    border:1px solid var(--accent-soft);
+    background:var(--surface);
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  details.corrige summary{
+    list-style:none;
+    cursor:pointer;
+    display:flex; align-items:center; gap:10px;
+    padding:14px 16px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:600;
+    font-size:0.92rem;
+    background:var(--accent-soft);
+    color:var(--accent);
+  }
+  details.corrige summary::-webkit-details-marker{display:none;}
+  details.corrige summary .chev{
+    margin-left:auto;
+    transition:transform .2s ease;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  details.corrige[open] summary .chev{transform:rotate(90deg);}
+  .corrige-body{
+    padding:14px 16px 16px;
+    display:flex; flex-direction:column; gap:10px;
+    font-family:'Source Serif 4', Georgia, serif;
+    font-size:0.95rem;
+  }
+  .corrige-body .a{display:flex; gap:10px;}
+  .corrige-body .a b{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--ink-faint);
+    font-weight:600;
+    flex:none;
+  }
+
+  footer.page{
+    margin-top:44px;
+    padding-top:16px;
+    border-top:1px solid var(--line);
+    font-size:0.75rem;
+    color:var(--ink-faint);
+    font-family:'IBM Plex Mono', monospace;
+  }
+</style>
+
+<header class="page">
+  <span class="eyebrow">SVT · Transmission du patrimoine génétique</span>
+  <h1>Mitose et méiose</h1>
+  <p class="dek">Fiche + bilan de connaissances — première notion du thème génétique cellulaire, spécialité SVT.</p>
+</header>
+
+<section aria-label="Comparaison mitose et méiose">
+  <span class="section-label">D'une cellule à ses descendantes</span>
+  <div class="diagram-card">
+    <div class="diagram-row mitose">
+      <span class="tag">Mitose</span>
+      <svg viewBox="0 0 300 90" role="img" aria-label="Une cellule à 2n chromosomes donne deux cellules filles identiques à 2n chromosomes">
+        <circle cx="34" cy="45" r="24" fill="var(--accent-2-soft)" stroke="var(--accent-2)" stroke-width="2"/>
+        <g fill="var(--accent-2)"><circle cx="26" cy="38" r="3"/><circle cx="42" cy="38" r="3"/><circle cx="26" cy="52" r="3"/><circle cx="42" cy="52" r="3"/></g>
+        <text x="34" y="82" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-faint)">2n</text>
+        <path d="M70 45 H108" stroke="var(--ink-faint)" stroke-width="1.5" marker-end="url(#arrow-m)"/>
+        <defs><marker id="arrow-m" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="var(--ink-faint)"/></marker></defs>
+        <g>
+          <circle cx="148" cy="25" r="17" fill="var(--accent-2-soft)" stroke="var(--accent-2)" stroke-width="2"/>
+          <g fill="var(--accent-2)"><circle cx="142" cy="21" r="2.2"/><circle cx="154" cy="21" r="2.2"/><circle cx="142" cy="29" r="2.2"/><circle cx="154" cy="29" r="2.2"/></g>
+          <circle cx="148" cy="65" r="17" fill="var(--accent-2-soft)" stroke="var(--accent-2)" stroke-width="2"/>
+          <g fill="var(--accent-2)"><circle cx="142" cy="61" r="2.2"/><circle cx="154" cy="61" r="2.2"/><circle cx="142" cy="69" r="2.2"/><circle cx="154" cy="69" r="2.2"/></g>
+        </g>
+        <text x="182" y="29" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--ink-faint)">2n</text>
+        <text x="182" y="69" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--ink-faint)">2n</text>
+      </svg>
+    </div>
+    <div class="diagram-row meiose">
+      <span class="tag">Méiose</span>
+      <svg viewBox="0 0 300 90" role="img" aria-label="Une cellule à 2n chromosomes donne quatre gamètes différents à n chromosomes">
+        <circle cx="30" cy="45" r="24" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <g fill="var(--accent)"><circle cx="22" cy="38" r="3"/><circle cx="38" cy="38" r="3"/><circle cx="22" cy="52" r="3"/><circle cx="38" cy="52" r="3"/></g>
+        <text x="30" y="82" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-faint)">2n</text>
+        <path d="M66 45 H98" stroke="var(--ink-faint)" stroke-width="1.5" marker-end="url(#arrow-e)"/>
+        <defs><marker id="arrow-e" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="var(--ink-faint)"/></marker></defs>
+        <g>
+          <circle cx="130" cy="20" r="13" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+          <circle cx="126" cy="18" r="1.8" fill="var(--accent)"/><circle cx="134" cy="22" r="1.8" fill="var(--accent)"/>
+          <circle cx="130" cy="50" r="13" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+          <circle cx="126" cy="47" r="1.8" fill="var(--accent)"/><circle cx="134" cy="53" r="1.8" fill="var(--accent)"/>
+          <circle cx="130" cy="80" r="13" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+          <circle cx="127" cy="83" r="1.8" fill="var(--accent)"/><circle cx="134" cy="77" r="1.8" fill="var(--accent)"/>
+          <circle cx="200" cy="35" r="13" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+          <circle cx="196" cy="32" r="1.8" fill="var(--accent)"/><circle cx="204" cy="38" r="1.8" fill="var(--accent)"/>
+          <circle cx="200" cy="65" r="13" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+          <circle cx="197" cy="68" r="1.8" fill="var(--accent)"/><circle cx="204" cy="62" r="1.8" fill="var(--accent)"/>
+        </g>
+        <text x="130" y="8" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-faint)">n</text>
+        <text x="200" y="16" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-faint)">n × 4</text>
+      </svg>
+    </div>
+    <p class="diagram-caption">2n = diploïde (paire de chromosomes) · n = haploïde (gamète)</p>
+  </div>
+</section>
+
+<section>
+  <h2>Définition</h2>
+  <p class="lede"><strong>La mitose</strong> est une division cellulaire qui produit deux cellules filles identiques entre elles et à la cellule mère. Elle assure la croissance et le renouvellement des tissus.</p>
+  <p class="lede"><strong>La méiose</strong> est une succession de deux divisions cellulaires qui aboutit à la formation des gamètes, avec division par deux du nombre de chromosomes et brassage génétique.</p>
+</section>
+
+<section>
+  <h2>Notions à retenir</h2>
+  <ul class="notions">
+    <li>Cellule <span class="chip">2n</span> diploïde vs <span class="chip">n</span> haploïde.</li>
+    <li>Mitose : 1 cellule <span class="chip">2n</span> → 2 cellules filles <span class="chip">2n</span> (identiques).</li>
+    <li>Méiose : 1 cellule <span class="chip">2n</span> → 4 cellules filles <span class="chip">n</span> (différentes).</li>
+    <li><strong>Fécondation</strong> : gamète (n) + gamète (n) = cellule-œuf (2n) — rétablit la diploïdie, ajoute un brassage supplémentaire.</li>
+    <li>Sources de diversité lors de la méiose : brassage intrachromosomique (crossing-over) et interchromosomique.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Vulgarisation</h2>
+  <div class="callout">
+    La mitose, c'est une <strong>photocopieuse</strong> : elle produit deux copies rigoureusement identiques. La méiose, c'est un <strong>jeu de cartes qu'on mélange</strong> avant de distribuer une main : chaque gamète reçoit une combinaison différente, ce qui garantit qu'aucun enfant (sauf vrais jumeaux) n'a exactement le même patrimoine génétique qu'un autre.
+  </div>
+</section>
+
+<section>
+  <h2>Pièges classiques</h2>
+  <div class="callout warn">
+    <ul>
+      <li>Confondre le nombre de divisions (mitose : 1 ; méiose : 2) et le nombre de cellules filles produites (mitose : 2 ; méiose : 4).</li>
+      <li>Croire que la méiose produit des cellules identiques comme la mitose — c'est l'inverse : elle est la source du brassage génétique.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="divider">Bilan de connaissances</div>
+
+<p class="bilan-intro">À faire sans relire la fiche ci-dessus. Le but n'est pas de réussir du premier coup, mais de voir clairement ce qui est acquis et ce qui reste flou.</p>
+
+<section>
+  <h2>Questions pour se tester</h2>
+  <ol class="questions">
+    <li><div class="q-body"><p class="q-text">Combien de cellules filles produit une mitose ? Et une méiose ?</p><input class="q-note" data-q="1" placeholder="note rapide (optionnel)"></div></li>
+    <li><div class="q-body"><p class="q-text">Pourquoi la méiose divise-t-elle par deux le nombre de chromosomes ?</p><input class="q-note" data-q="2" placeholder="note rapide (optionnel)"></div></li>
+    <li><div class="q-body"><p class="q-text">Qu'est-ce qui garantit que deux gamètes issus de la méiose ne sont génétiquement pas identiques ?</p><input class="q-note" data-q="3" placeholder="note rapide (optionnel)"></div></li>
+    <li><div class="q-body"><p class="q-text">Pourquoi la fécondation rétablit-elle la diploïdie ?</p><input class="q-note" data-q="4" placeholder="note rapide (optionnel)"></div></li>
+    <li><div class="q-body"><p class="q-text">Quelle est la différence essentielle entre le rôle de la mitose et celui de la méiose dans l'organisme ?</p><input class="q-note" data-q="5" placeholder="note rapide (optionnel)"></div></li>
+  </ol>
+</section>
+
+<section>
+  <h2>Auto-évaluation rapide</h2>
+  <div class="progress-row"><span>Points maîtrisés</span><strong id="progress-label">0 / 5</strong></div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="checklist" id="checklist">
+    <label><input type="checkbox" data-c="1"><span class="q-text-label">Je sais différencier une cellule diploïde et une cellule haploïde</span></label>
+    <label><input type="checkbox" data-c="2"><span class="q-text-label">Je sais donner le nombre de divisions et de cellules filles pour la mitose et la méiose</span></label>
+    <label><input type="checkbox" data-c="3"><span class="q-text-label">Je sais expliquer les sources de brassage génétique lors de la méiose</span></label>
+    <label><input type="checkbox" data-c="4"><span class="q-text-label">Je sais expliquer pourquoi la fécondation rétablit la diploïdie</span></label>
+    <label><input type="checkbox" data-c="5"><span class="q-text-label">Je sais expliquer pourquoi mitose et méiose ont des rôles biologiques différents</span></label>
+  </div>
+</section>
+
+<section>
+  <h2>Points où je bloque encore</h2>
+  <textarea class="freeblock" id="freeblock" placeholder="À remplir librement après avoir répondu aux questions ci-dessus..."></textarea>
+</section>
+
+<section>
+  <details class="corrige" id="corrige">
+    <summary>📖 Corrigé — à ouvrir seulement après avoir essayé <span class="chev">›</span></summary>
+    <div class="corrige-body">
+      <div class="a"><b>1</b><p>Mitose : 2 cellules filles identiques. Méiose : 4 cellules filles génétiquement différentes.</p></div>
+      <div class="a"><b>2</b><p>Parce qu'elle prépare la formation de gamètes qui, en s'unissant lors de la fécondation, doivent redonner le nombre normal de chromosomes (2n), pas le double.</p></div>
+      <div class="a"><b>3</b><p>Le brassage intrachromosomique (crossing-over) et interchromosomique (répartition aléatoire des chromosomes) lors de la méiose.</p></div>
+      <div class="a"><b>4</b><p>Chaque gamète apporte n chromosomes ; en s'unissant (n+n), la cellule-œuf retrouve 2n chromosomes, la diploïdie normale de l'espèce.</p></div>
+      <div class="a"><b>5</b><p>La mitose assure la croissance et le renouvellement des tissus (cellules identiques) ; la méiose prépare la reproduction sexuée en générant de la diversité génétique dans les gamètes.</p></div>
+    </div>
+  </details>
+</section>
+
+<footer class="page">Assistant scolaire Tom · SVT · svt/division-cellulaire-mitose-meiose.md</footer>
+
+<script>
+(function(){
+  var KEY = 'tom-svt-mitose-meiose-v1';
+  var state = {};
+  try{ state = JSON.parse(localStorage.getItem(KEY) || '{}'); }catch(e){ state = {}; }
+
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  document.querySelectorAll('.q-note').forEach(function(input){
+    var k = 'note'+input.dataset.q;
+    if(state[k]) input.value = state[k];
+    input.addEventListener('input', function(){ state[k] = input.value; save(); });
+  });
+
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('#checklist input[type="checkbox"]'));
+  var fill = document.getElementById('progress-fill');
+  var label = document.getElementById('progress-label');
+
+  function updateProgress(){
+    var n = boxes.filter(function(b){ return b.checked; }).length;
+    fill.style.width = (n/boxes.length*100) + '%';
+    label.textContent = n + ' / ' + boxes.length;
+  }
+
+  boxes.forEach(function(box){
+    var k = 'check'+box.dataset.c;
+    if(state[k]){ box.checked = true; }
+    box.addEventListener('change', function(){ state[k] = box.checked; save(); updateProgress(); });
+  });
+  updateProgress();
+
+  var free = document.getElementById('freeblock');
+  if(state.freeblock) free.value = state.freeblock;
+  free.addEventListener('input', function(){ state.freeblock = free.value; save(); });
+})();
+</script>
