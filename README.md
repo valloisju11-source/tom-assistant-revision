@@ -1,4 +1,4 @@
-# toms-assistant-revision
+# tom-assistant-revision
 
 Dépôt **public** de diffusion pour l'"Assistant scolaire Tom" : uniquement le
 contenu de révision **validé** (fiches, bilans, cartes mentales) prêt à être
