@@ -1,0 +1,168 @@
+/* ============================================================
+   Feuille de style de l'app de consultation.
+   Mêmes tokens de couleur / typographies que les fiches HTML du
+   projet (voir templates/fiche-html-template.html côté dépôt de
+   travail), pour que la navigation et les fiches se ressemblent.
+   ============================================================ */
+
+:root{
+  --bg:#F1F4EF;
+  --surface:#FFFFFF;
+  --surface-2:#E8EEE6;
+  --ink:#1C2420;
+  --ink-soft:#4E5850;
+  --ink-faint:#83907F;
+  --line:#D9E1D6;
+  --accent:#7A2E63;
+  --accent-soft:#F2E4EC;
+  --accent-2:#1F7A66;
+  --accent-2-soft:#E0EFE8;
+  --warn:#93591C;
+  --warn-soft:#F5E9D6;
+  --focus:#2F6FED;
+  --shadow: 0 1px 2px rgba(28,36,32,0.06), 0 6px 20px rgba(28,36,32,0.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12160F; --surface:#191F19; --surface-2:#212A20;
+    --ink:#E9EDE4; --ink-soft:#AEBAA9; --ink-faint:#748073; --line:#2B342A;
+    --accent:#E0A0C8; --accent-soft:#332330;
+    --accent-2:#6BCBAE; --accent-2-soft:#173028;
+    --warn:#E6B172; --warn-soft:#3A2E17; --focus:#7FA8FF;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px rgba(0,0,0,0.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12160F; --surface:#191F19; --surface-2:#212A20;
+  --ink:#E9EDE4; --ink-soft:#AEBAA9; --ink-faint:#748073; --line:#2B342A;
+  --accent:#E0A0C8; --accent-soft:#332330;
+  --accent-2:#6BCBAE; --accent-2-soft:#173028;
+  --warn:#E6B172; --warn-soft:#3A2E17; --focus:#7FA8FF;
+  --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px rgba(0,0,0,0.35);
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0; padding:0;}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:'IBM Plex Sans', system-ui, sans-serif;
+  line-height:1.5;
+  min-height:100vh;
+  /* Marge de sécurité pour l'encoche / la barre du bas en PWA plein écran */
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+h1,h2,h3{font-family:'Source Serif 4', Georgia, serif; text-wrap:balance; color:var(--ink); margin:0 0 .4em;}
+p{margin:0 0 .8em;}
+a{color:var(--accent);}
+:focus-visible{outline:2px solid var(--focus); outline-offset:2px; border-radius:4px;}
+::selection{background:var(--accent-soft); color:var(--ink);}
+
+#app{max-width:640px; margin-inline:auto; padding:18px 18px 48px;}
+
+/* --- Barre supérieure commune à tous les niveaux --- */
+.topbar{
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:20px; min-height:36px;
+}
+.back-btn{
+  font-family:'IBM Plex Sans', sans-serif; font-size:0.9rem; font-weight:600;
+  color:var(--accent); background:var(--accent-soft); border:none;
+  border-radius:8px; padding:8px 14px; cursor:pointer;
+  display:flex; align-items:center; gap:6px;
+  -webkit-tap-highlight-color:transparent;
+}
+.back-btn:active{opacity:.8;}
+.topbar .titre-courant{
+  font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.06em;
+  text-transform:uppercase; color:var(--ink-faint); overflow:hidden;
+  text-overflow:ellipsis; white-space:nowrap;
+}
+
+/* --- Accueil / listes (matières, notions, documents) --- */
+.hero{margin-bottom:24px;}
+.hero h1{font-size:1.6rem; font-weight:700;}
+.hero p{color:var(--ink-soft); font-size:0.95rem; margin:0;}
+
+.liste-cartes{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+.carte{
+  display:flex; align-items:center; gap:12px;
+  background:var(--surface); border:1px solid var(--line); border-radius:14px;
+  padding:16px 16px; box-shadow:var(--shadow); cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  text-align:left; width:100%; font:inherit; color:inherit;
+}
+.carte:active{transform:scale(0.99);}
+.carte .contenu{flex:1; min-width:0;}
+.carte .titre{font-family:'Source Serif 4', Georgia, serif; font-weight:600; font-size:1.05rem; display:flex; align-items:center; gap:8px;}
+.carte .sous-titre{font-size:0.82rem; color:var(--ink-faint); margin-top:2px;}
+.carte .chevron{color:var(--ink-faint); flex:none; font-size:1.2rem;}
+
+.pastille{
+  display:inline-block; width:8px; height:8px; border-radius:50%;
+  background:var(--accent-2); flex:none;
+}
+.pastille-texte{
+  font-family:'IBM Plex Mono', monospace; font-size:0.65rem; letter-spacing:0.05em;
+  text-transform:uppercase; color:var(--accent-2); font-weight:600;
+}
+
+.etat-vide{
+  color:var(--ink-faint); font-size:0.92rem; font-style:italic;
+  padding:24px 4px; text-align:center;
+}
+
+/* --- Niveau document : rendu Markdown / page HTML --- */
+.doc-entete{margin-bottom:18px;}
+.doc-entete .eyebrow{
+  font-family:'IBM Plex Mono', monospace; font-size:0.7rem; letter-spacing:0.09em;
+  text-transform:uppercase; color:var(--accent); display:flex; align-items:center; gap:8px;
+}
+.doc-entete .eyebrow::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--accent); flex:none;}
+.doc-entete h1{font-size:1.5rem; margin-top:6px;}
+.doc-entete .maj{font-size:0.8rem; color:var(--ink-faint); margin-top:4px;}
+
+.doc-rendu{
+  background:var(--surface); border:1px solid var(--line); border-radius:14px;
+  padding:20px 18px; box-shadow:var(--shadow);
+  font-family:'Source Serif 4', Georgia, serif; font-size:1rem;
+  overflow-wrap:break-word;
+}
+.doc-rendu h1{font-size:1.3rem;}
+.doc-rendu h2{font-size:1.1rem; margin-top:1.4em; padding-top:.6em; border-top:1px solid var(--line);}
+.doc-rendu h2:first-child{margin-top:0; padding-top:0; border-top:none;}
+.doc-rendu ul, .doc-rendu ol{padding-left:1.3em;}
+.doc-rendu li{margin-bottom:.4em;}
+.doc-rendu code{
+  font-family:'IBM Plex Mono', monospace; font-size:0.85em;
+  background:var(--surface-2); border-radius:4px; padding:0.1em 0.35em;
+}
+.doc-rendu blockquote{
+  margin:0; padding:10px 14px; border-left:3px solid var(--accent-2);
+  background:var(--accent-2-soft); border-radius:0 10px 10px 0;
+  font-size:0.95rem; color:var(--ink-soft);
+}
+.doc-rendu details{
+  border:1px solid var(--accent-soft); border-radius:12px; overflow:hidden;
+  margin-top:1em;
+}
+.doc-rendu summary{
+  cursor:pointer; padding:12px 14px; background:var(--accent-soft);
+  color:var(--accent); font-family:'IBM Plex Sans', sans-serif; font-weight:600;
+  font-size:0.92rem;
+}
+.doc-rendu details > *:not(summary){padding:0 14px;}
+.doc-rendu details[open] > *:last-child{padding-bottom:14px;}
+/* Les formules KaTeX ne doivent jamais forcer un débordement horizontal
+   de la page sur petit écran : on laisse le bloc défiler lui-même. */
+.doc-rendu .katex-display{overflow-x:auto; overflow-y:hidden; padding-block:4px;}
+
+.doc-iframe-wrap{margin:-18px; /* la page HTML gère déjà ses propres marges */ }
+.doc-iframe-wrap iframe{
+  display:block; width:100%; border:none;
+  height:calc(100vh - 90px);
+  background:var(--surface);
+}
+
+@media (min-width:480px){
+  #app{padding:24px 24px 56px;}
+}

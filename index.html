@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Révisions</title>
+
+<!-- Installation sur l'écran d'accueil iOS : ces balises font que Safari
+     propose "Ajouter à l'écran d'accueil" et que l'app s'ouvre ensuite en
+     plein écran, sans barre d'adresse. -->
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Révisions">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#7A2E63">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<!-- KaTeX et marked sont livrés avec le site (dossier vendor/) plutôt que
+     chargés depuis un CDN externe : ça évite toute dépendance à la
+     disponibilité d'un tiers pour que Tom puisse consulter ses fiches. -->
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
+<!-- Tous les scripts sont en "defer" et dans l'ordre de dépendance : ils
+     s'exécutent après l'analyse du HTML mais avant que app.js démarre,
+     donc marked/KaTeX sont toujours prêts quand app.js s'en sert. -->
+<script defer src="vendor/katex/katex.min.js"></script>
+<script defer src="vendor/katex/auto-render.min.js"></script>
+<!-- marked : conversion Markdown -> HTML à l'affichage -->
+<script defer src="vendor/marked.min.js"></script>
+<script defer src="app.js"></script>
+</head>
+<body>
+<div id="app">Chargement…</div>
+</body>
+</html>
